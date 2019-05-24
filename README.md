@@ -8,5 +8,6 @@
 +  下载工程
 +  修改page.properties，里面是用自己账号访问weibo.cn的headers
 +  修改start.properties，按照start.properties中注释进行修改
++  修改command.java  @Qualifier("meituluCrawler")，修改为@Qualifier("WeiboCrawlerService")
 
     
