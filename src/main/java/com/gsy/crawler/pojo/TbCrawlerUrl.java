@@ -82,4 +82,14 @@ public class TbCrawlerUrl {
         this.url = url;
         this.busy = busy;
     }
+
+    @Override
+    public String toString() {
+        return "TbCrawlerUrl{" +
+                "url='" + url + '\'' +
+                ", type='" + type + '\'' +
+                ", busy='" + busy + '\'' +
+                ", info='" + info + '\'' +
+                '}';
+    }
 }

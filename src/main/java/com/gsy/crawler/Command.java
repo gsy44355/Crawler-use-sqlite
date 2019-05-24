@@ -2,17 +2,14 @@ package com.gsy.crawler;
 
 import com.gsy.crawler.crawler.CrawlerBaseService;
 import com.gsy.crawler.crawler.CreateHeaderMap;
+import com.gsy.crawler.crawler.SpecialCrawlerService;
 import com.gsy.crawler.crawler.WebCrawlerUtil;
-import com.gsy.crawler.crawler.WeiboCrawlerService;
-import com.gsy.crawler.mapper.auto.TbCrawlerUrlMapper;
-import com.gsy.crawler.mapper.custom.TbCrawlerUrlCustomMapper;
-import com.gsy.crawler.pojo.TbCrawlerUrl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -20,14 +17,16 @@ import java.util.Scanner;
  */
 @Component
 public class Command implements CommandLineRunner {
-    @Autowired
-    WeiboCrawlerService weiboCrawlerService;
+    @Autowired(required = true)
+    @Qualifier("meituluCrawler")
+    SpecialCrawlerService specialCrawlerService;
     @Autowired
     CrawlerBaseService crawlerBaseService;
     @Override
     public void run(String... args) throws Exception {
 
 //        crawlerBaseService.addUrl(new TbCrawlerUrl("https://weibo.cn/mblog/picAll/HvmAs29hS?rl=1","1","0"));
+//        WebCrawlerUtil.getWebPicture("https://mtl.ttsqgs.com/images/img/3292/49.jpg","1.jpg", CreateHeaderMap.getMapByNameWithRandomIp("crawler/picturea"),"");
         System.out.println("请输入start or restart：");
         Scanner sc = new Scanner(System.in);
         String s = sc.next();
@@ -37,11 +36,11 @@ public class Command implements CommandLineRunner {
         s = StringUtils.lowerCase(s);
         switch (s){
             case "start":{
-                weiboCrawlerService.startNew();
+                specialCrawlerService.startNew();
                 break;
             }
             case "restart":{
-                weiboCrawlerService.reStart();
+                specialCrawlerService.reStart();
                 break;
             }
             default:

@@ -11,7 +11,7 @@ public interface CrawlerBaseService {
      * @param type Url类型
      * @return
      */
-    String getUrl(String type);
+    TbCrawlerUrl getUrl(String type);
 
     /**
      * 将一个Url的busy位归0，这个方法不可以做成事务回滚，目前没有找到合适的方法
@@ -21,6 +21,7 @@ public interface CrawlerBaseService {
      */
     int updateUrlToNoUse(String url);
 
+    int updateUrlToError(String url);
     /**
      * 将所有busy更新为0，在续传的时候调用
      * @return

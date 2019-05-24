@@ -22,19 +22,25 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
     @Autowired
     TbCrawlerUrlCustomMapper tbCrawlerUrlCustomMapper;
     @Override
-    public synchronized String getUrl(String type) {
+    public synchronized TbCrawlerUrl getUrl(String type) {
         TbCrawlerUrl tbCrawlerUrl = tbCrawlerUrlCustomMapper.getOneUrl(type);
         if (tbCrawlerUrl == null){
             return null;
         }
         tbCrawlerUrl.setBusy("1");
         tbCrawlerUrlMapper.updateByPrimaryKeySelective(tbCrawlerUrl);
-        return tbCrawlerUrl.getUrl();
+        return tbCrawlerUrl;
     }
 
     @Override
     public int updateUrlToNoUse(String url) {
         return tbCrawlerUrlMapper.updateByPrimaryKeySelective(new TbCrawlerUrl(url,"0"));
+    }
+
+    @Override
+    public int updateUrlToError(String url) {
+
+        return tbCrawlerUrlMapper.updateByPrimaryKeySelective(new TbCrawlerUrl(url,"3"));
     }
 
     @Override
@@ -74,8 +80,9 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
     @Override
     public void doCrawler(String type,long sleepTime,CrawlerSpecialFunc crawlerSpecialFunc) {
         int errorCount = 0;
+        long start = System.currentTimeMillis();
         while(true){
-            String url = null;
+            TbCrawlerUrl url = null;
             try {
                 if(sleepTime != 0 ){
                     Thread.sleep(sleepTime);
@@ -86,16 +93,17 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
                 }
                 LogUtil.info(this.getClass(),"获取到Url={}",url);
                 crawlerSpecialFunc.specialFunc(url);
-                this.updateUrlFinish(url);
+                this.updateUrlFinish(url.getUrl());
             }catch (Exception e){
                 errorCount++;
                 LogUtil.error(this.getClass(),"抓取异常，决定需要如何处理",e);
-                this.updateUrlToNoUse(url);
+                this.updateUrlToError(url.getUrl());
                 if (errorCount >100){
                     break;
                 }
             }
         }
+        LogUtil.info(this.getClass(),"线程爬取结束,共耗时{}s",(System.currentTimeMillis()-start)/1000);
     }
 
     @Override

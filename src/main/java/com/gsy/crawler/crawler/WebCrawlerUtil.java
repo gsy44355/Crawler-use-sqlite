@@ -1,6 +1,8 @@
 package com.gsy.crawler.crawler;
 
 
+import com.gsy.crawler.util.LogUtil;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,7 +20,6 @@ public class WebCrawlerUtil {
         try{
             //new一个URL对象
             URL url = new URL(urlStr);
-            System.out.println(urlStr);
             //打开链接
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             //设置请求方式为"GET"
@@ -34,10 +35,14 @@ public class WebCrawlerUtil {
             //得到图片的二进制数据，以二进制封装得到数据，具有通用性
             byte[] data = readInputStream(inStream);
             if(data ==null || data.length == 0){
-                System.out.println(WebCrawlerUtil.class+"图片解析失败，数据为空，url={}"+urlStr);
+               LogUtil.error(WebCrawlerUtil.class,"图片解析失败，数据为空，url={}"+urlStr);
                 return false;
             }
             //new一个文件对象用来保存图片，默认保存当前工程根目录
+            File directoryFile = new File(directory);
+            if (!directoryFile.exists()){
+                directoryFile.mkdirs();
+            }
             File imageFile = new File(directory,pictureName);
             //创建输出流
             outStream = new FileOutputStream(imageFile);
@@ -45,8 +50,7 @@ public class WebCrawlerUtil {
             outStream.write(data);
             return true;
         }catch (IOException e){
-            System.out.println(WebCrawlerUtil.class+"下载图片失败");
-            e.printStackTrace();
+            LogUtil.error(WebCrawlerUtil.class,"下载图片失败={}",pictureName);
             throw e;
         }finally {
             safeClose(inStream);
@@ -78,7 +82,7 @@ public class WebCrawlerUtil {
     public static String get302Location(String url,Map<String,String> headers) throws IOException {
         String location = "";
         try {
-            System.out.println("访问地址:" + url);
+           LogUtil.info(WebCrawlerUtil.class,"访问地址:={}" + url);
             URL serverUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) serverUrl
                     .openConnection();
