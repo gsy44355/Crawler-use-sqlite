@@ -18,7 +18,8 @@ import java.util.Scanner;
 @Component
 public class Command implements CommandLineRunner {
     @Autowired(required = true)
-    @Qualifier("meituluCrawler")
+//    @Qualifier("meituluCrawler")
+    @Qualifier("WeiboCrawlerService")
     SpecialCrawlerService specialCrawlerService;
     @Autowired
     CrawlerBaseService crawlerBaseService;
