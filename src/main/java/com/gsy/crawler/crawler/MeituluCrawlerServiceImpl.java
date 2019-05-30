@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * Created By Gsy on 2019/5/23
  */
 @Service("meituluCrawler")
-public class SpecialCrawlerServiceImpl2 implements SpecialCrawlerService {
+public class MeituluCrawlerServiceImpl implements SpecialCrawlerService {
     @Autowired
     CrawlerBaseService crawlerBaseService;
     @Override

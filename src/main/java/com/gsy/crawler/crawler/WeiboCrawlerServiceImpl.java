@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
  */
 @Service("WeiboCrawlerService")
 @EnableAsync
-public class SpecialCrawlerServiceImpl implements SpecialCrawlerService {
+public class WeiboCrawlerServiceImpl implements SpecialCrawlerService {
     @Autowired
     CrawlerBaseService crawlerBaseService;
     @Override

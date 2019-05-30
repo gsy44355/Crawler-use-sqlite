@@ -52,14 +52,16 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
     @Override
     public int addUrl(TbCrawlerUrl tbCrawlerUrl) {
         try{
-            return tbCrawlerUrlMapper.insertSelective(tbCrawlerUrl);
+            tbCrawlerUrlMapper.insertSelective(tbCrawlerUrl);
+            LogUtil.info(this.getClass(),"新增URL={}",tbCrawlerUrl.toString());
+            return 1;
         }catch (DuplicateKeyException e){
             LogUtil.info(this.getClass(),"Crawler获取到重复Url={}",tbCrawlerUrl.getUrl());
             return 1;
         }catch (UncategorizedSQLException e){
 //            System.out.println("获取到异常");
             if (e.getMessage().contains("UNIQUE constraint failed")){
-//                System.out.println("这个关键字可以拦截住");
+//             关键字拦截sqlite重复URL报错
                 LogUtil.info(this.getClass(),"Crawler获取到重复Url={}",tbCrawlerUrl.getUrl());
             }
             return 1;
@@ -73,6 +75,7 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
 
     @Override
     public int deleteAll() {
+        LogUtil.info(this.getClass(),"删除所有存储的URL，重新开始");
         return tbCrawlerUrlCustomMapper.deleteAll();
 
     }
@@ -91,7 +94,7 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
                 if(url == null){
                     break;
                 }
-                LogUtil.info(this.getClass(),"获取到Url={}",url);
+                LogUtil.info(this.getClass(),"数据库中取出Url={}",url);
                 crawlerSpecialFunc.specialFunc(url);
                 this.updateUrlFinish(url.getUrl());
             }catch (Exception e){
@@ -109,8 +112,10 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
     @Override
     public void doCrawlerByMultiThread(String type, long sleepTime, int threadCounts, CrawlerSpecialFunc crawlerSpecialFunc) {
         List<Thread> list = new ArrayList<>();
+        long multiStartTime = System.currentTimeMillis();
+        LogUtil.info(this.getClass(),"多线程爬取开始，线程数={}",threadCounts);
         for (int i = 0; i < threadCounts; i++) {
-            LogUtil.info(this.getClass(),"创建线程={}",""+i);
+            LogUtil.info(this.getClass(),"创建线程={}",i);
             Thread thread = new Thread(() -> {
                 doCrawler(type,sleepTime,crawlerSpecialFunc);
             });
@@ -124,6 +129,7 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
                 e.printStackTrace();
             }
         }
+        LogUtil.info(this.getClass(),"多线程爬取结束，共耗时={}秒",(System.currentTimeMillis()-multiStartTime)/1000);
     }
 
     @Override

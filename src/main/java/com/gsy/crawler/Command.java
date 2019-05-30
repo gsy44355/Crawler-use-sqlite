@@ -1,9 +1,6 @@
 package com.gsy.crawler;
 
-import com.gsy.crawler.crawler.CrawlerBaseService;
-import com.gsy.crawler.crawler.CreateHeaderMap;
 import com.gsy.crawler.crawler.SpecialCrawlerService;
-import com.gsy.crawler.crawler.WebCrawlerUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,8 +18,6 @@ public class Command implements CommandLineRunner {
 //    @Qualifier("meituluCrawler")
     @Qualifier("WeiboCrawlerService")
     SpecialCrawlerService specialCrawlerService;
-    @Autowired
-    CrawlerBaseService crawlerBaseService;
     @Override
     public void run(String... args) throws Exception {
 

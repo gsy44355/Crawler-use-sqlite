@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpecialCrawlerServiceImplTest {
+public class WeiboCrawlerServiceImplTest {
     @Autowired
     SpecialCrawlerService specialCrawlerService;
     @Test
