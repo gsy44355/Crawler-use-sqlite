@@ -72,4 +72,5 @@ public interface CrawlerBaseService {
 
     void updateUrlFinish(String url);
 
+    void resetAllFail();
 }

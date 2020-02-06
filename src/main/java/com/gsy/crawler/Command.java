@@ -16,7 +16,8 @@ import java.util.Scanner;
 public class Command implements CommandLineRunner {
     @Autowired(required = true)
 //    @Qualifier("meituluCrawler")
-    @Qualifier("WeiboCrawlerService")
+//    @Qualifier("WeiboCrawlerService")
+    @Qualifier("AissPicCrawlerServiceImpl")
     SpecialCrawlerService specialCrawlerService;
     @Override
     public void run(String... args) throws Exception {

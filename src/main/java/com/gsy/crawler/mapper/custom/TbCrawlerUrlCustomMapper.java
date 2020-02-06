@@ -9,6 +9,7 @@ public interface TbCrawlerUrlCustomMapper {
     TbCrawlerUrl getOneUrl(String type);
     int deleteAll();
     int resetAll();
+    int resetAllFail();
     int updateByPrimaryKeySelective(TbCrawlerUrl tbCrawlerUrl);
     int insertSelective(TbCrawlerUrl tbCrawlerUrl);
     int deleteByPrimaryKey(String key);

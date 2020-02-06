@@ -2,6 +2,7 @@ package com.gsy.crawler.crawler;
 
 
 import com.gsy.crawler.util.LogUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -48,6 +49,7 @@ public class WebCrawlerUtil {
             outStream = new FileOutputStream(imageFile);
             //写入数据
             outStream.write(data);
+            outStream.flush();
             return true;
         }catch (IOException e){
             LogUtil.error(WebCrawlerUtil.class,"下载图片失败={}",pictureName);
@@ -95,9 +97,11 @@ public class WebCrawlerUtil {
             }
             conn.connect();
             location = conn.getHeaderField("Location");
-
+            if (StringUtils.isEmpty(location)){
+                throw new IOException("获取不到location地址");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             throw e;
 //            return get302Location (url,headers);
         }

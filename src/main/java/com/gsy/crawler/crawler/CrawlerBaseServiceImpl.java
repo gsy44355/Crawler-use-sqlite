@@ -117,7 +117,7 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
         for (int i = 0; i < threadCounts; i++) {
             LogUtil.info(this.getClass(),"创建线程={}",i);
             Thread thread = new Thread(() -> {
-                doCrawler(type,sleepTime,crawlerSpecialFunc);
+                this.doCrawler(type, sleepTime, crawlerSpecialFunc);
             });
             list.add(thread);
             thread.start();
@@ -135,5 +135,10 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
     @Override
     public void updateUrlFinish(String url) {
         tbCrawlerUrlMapper.updateByPrimaryKeySelective(new TbCrawlerUrl(url,"2"));
+    }
+
+    @Override
+    public void resetAllFail() {
+        tbCrawlerUrlCustomMapper.resetAllFail();
     }
 }

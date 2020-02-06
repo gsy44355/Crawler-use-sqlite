@@ -83,6 +83,13 @@ public class TbCrawlerUrl {
         this.busy = busy;
     }
 
+    public TbCrawlerUrl(String url, String type, String busy, String info) {
+        this.url = url;
+        this.type = type;
+        this.busy = busy;
+        this.info = info;
+    }
+
     @Override
     public String toString() {
         return "TbCrawlerUrl{" +
