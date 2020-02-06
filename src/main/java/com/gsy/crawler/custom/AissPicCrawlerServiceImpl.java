@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+/**
+ * 这个作为例子放在这里，可以参照这个来写
+ */
 @Service("AissPicCrawlerServiceImpl")
 public class AissPicCrawlerServiceImpl implements SpecialCrawlerService {
     @Autowired
