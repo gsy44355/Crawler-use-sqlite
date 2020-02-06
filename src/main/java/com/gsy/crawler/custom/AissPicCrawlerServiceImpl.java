@@ -20,24 +20,28 @@ import java.util.ResourceBundle;
  */
 @Service("AissPicCrawlerServiceImpl")
 public class AissPicCrawlerServiceImpl implements SpecialCrawlerService {
+//    注入基础service，后续调用其中方法
     @Autowired
     CrawlerBaseService crawlerBaseService;
+//    代码内直接给出网址主体，后续使用，如果不用可以不写
     String baseUrl = "https://www.aitaotu.com";
+//    从0开始时使用，实现接口中需要覆盖的方法
     @Override
     public void startNew() {
-        crawlerBaseService.deleteAll();
+        crawlerBaseService.deleteAll();//删除表中所有的网址，这个表明了不能同时开两个不同的任务，可以优化，但是单机个人认为没必要，如果一定要，考虑把数据库文件导出来。
         String startUrl = "https://www.aitaotu.com/tag/aiss/@replace@.html";
         for(int i = 1;i<=8;i++){
             String stemp = startUrl.replaceAll("@replace@",String.valueOf(i));
-            crawlerBaseService.addUrl(new TbCrawlerUrl(stemp, "1","0"));
+            crawlerBaseService.addUrl(new TbCrawlerUrl(stemp, "1","0"));//直接调用addUrl这个方法，相当于维护的URL池，type位可以自定义，但建议用1 2 3 4直接写，简单
         }
-        reStart();
+        reStart();//后续操作与重新开始一致，只不过最开始需要给出起始URL，所以只需要调用restart方法即可。
     }
-
+//    中间暂停过，想要重新开始使用的逻辑
     @Override
     public void reStart() {
-        crawlerBaseService.resetAll();
-        crawlerBaseService.resetAllFail();
+        crawlerBaseService.resetAll();//将URL池中的busy位为1的置为0，为1说明上一次正在执行，但是还没完
+        crawlerBaseService.resetAllFail();//将busy位为3的置为0，为3说明上一次失败了，如果不想管失败的可以考虑注释掉
+        //下面这个方法是多线程方法，使用λ表达式，异常等都已经处理，只需要自行维护一下特殊处理过程，即提取URL的过程即可
         crawlerBaseService.doCrawlerByMultiThread("1",0,8,(tbCrawlerUrl)->{
             String s = tbCrawlerUrl.getUrl();
             String html = WebCrawlerUtil.getWebHtml(s,CreateHeaderMap.getMapByName("crawler/aisspage1"),"utf-8");
@@ -45,9 +49,10 @@ public class AissPicCrawlerServiceImpl implements SpecialCrawlerService {
             Elements elements = document.getElementsByClass("Pli-litpic");
             for (Element e:elements) {
                 String temp = baseUrl+e.attr("href");
-                crawlerBaseService.addUrl(new TbCrawlerUrl(temp,"2","0"));
+                crawlerBaseService.addUrl(new TbCrawlerUrl(temp,"2","0"));//注意type位要与之前不一致
             }
         });
+        //下面方法就是看你对于URL池需要几次更新
         getUrl();
         getPicUrl();
         getPic();
@@ -87,6 +92,7 @@ public class AissPicCrawlerServiceImpl implements SpecialCrawlerService {
             String pathdir = info.split(";")[0];
             String picname = s.substring(s.lastIndexOf("/"));
             String picdir = basedir + "\\" + pathdir;
+            //获取图片并保存
             WebCrawlerUtil.getWebPicture(s,picname,CreateHeaderMap.getMapByNameWithRandomIp("crawler/aisspagepic"),picdir);
         });
     }
