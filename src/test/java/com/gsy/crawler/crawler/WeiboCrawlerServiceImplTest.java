@@ -1,5 +1,6 @@
 package com.gsy.crawler.crawler;
 
+import com.gsy.crawler.util.TextExtract;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,12 @@ import java.io.IOException;
 public class WeiboCrawlerServiceImplTest {
     @Autowired
     SpecialCrawlerService specialCrawlerService;
-    @Test
+//    @Test
     public void startNew() {
         specialCrawlerService.startNew();
     }
 
-    @Test
+//    @Test
     public void reStart() {
         try {
             String html = WebCrawlerUtil.getWebHtml("https://weibo.cn/u/6697930990?filter=2&page=2", CreateHeaderMap.getMapByName("crawler/page"),"utf-8");
@@ -31,4 +32,5 @@ public class WeiboCrawlerServiceImplTest {
             e.printStackTrace();
         }
     }
+
 }

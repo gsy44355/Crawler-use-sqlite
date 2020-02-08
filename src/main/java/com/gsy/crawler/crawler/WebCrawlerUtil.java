@@ -116,7 +116,7 @@ public class WebCrawlerUtil {
      * @param encoding
      * @return
      */
-    public static String getWebHtml(String urlStr,Map<String,String> headers,String encoding) throws IOException {
+    public static String getWebHtmlWithNewLine(String urlStr,Map<String,String> headers,String encoding) throws IOException {
         InputStream inputStream = null;
         String string = null;
         BufferedReader br = null;
@@ -136,6 +136,7 @@ public class WebCrawlerUtil {
             String s;
             while ((s = br.readLine()) != null) {
                 sb.append(s);
+                sb.append("\n");
             }
             string = sb.toString();
         } catch (IOException e) {
@@ -148,6 +149,9 @@ public class WebCrawlerUtil {
         return string;
     }
 
+    public static String getWebHtml(String urlStr,Map<String,String> headers,String encoding) throws IOException{
+        return getWebHtmlWithNewLine(urlStr, headers, encoding).replaceAll("\n","");
+    }
     public static void safeClose(Closeable closeable) {
         if (closeable != null) {
             try {

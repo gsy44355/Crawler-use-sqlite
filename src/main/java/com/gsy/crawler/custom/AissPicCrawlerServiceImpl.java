@@ -12,8 +12,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
 
 /**
  * 这个作为例子放在这里，可以参照这个来写
@@ -25,6 +23,8 @@ public class AissPicCrawlerServiceImpl implements SpecialCrawlerService {
     CrawlerBaseService crawlerBaseService;
 //    代码内直接给出网址主体，后续使用，如果不用可以不写
     String baseUrl = "https://www.aitaotu.com";
+//    给出保存图片的主文件夹，保存图片时拼接使用
+    String basedir = "D:\\图片\\aiss";
 //    从0开始时使用，实现接口中需要覆盖的方法
     @Override
     public void startNew() {
@@ -86,7 +86,7 @@ public class AissPicCrawlerServiceImpl implements SpecialCrawlerService {
     }
     public void getPic(){
         crawlerBaseService.doCrawlerByMultiThread("4",0,20,url -> {
-            String basedir = "D:\\图片\\aiss";
+
             String s = url.getUrl();
             String info = url.getInfo();
             String pathdir = info.split(";")[0];
