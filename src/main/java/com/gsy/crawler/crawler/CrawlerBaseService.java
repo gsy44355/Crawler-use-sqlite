@@ -54,7 +54,7 @@ public interface CrawlerBaseService {
      * 传入一个函数式接口，建议使用λ表达式，会代码简洁很多<br/>
      * 里面已经实现获取链接，删除链接，函数式接口中实现自己的操作。
      * @param type 链接类型
-     * @param sleepTime 每一次爬取之后停止时间，微博这种你要是敢一直不停，就得无休止的改header
+     * @param sleepTime 每一次爬取之后线程休眠时间，大于1500ms的数值写入可以让其停止(sleepTime-1000,sleepTime)的随机时间
      * @param crawlerSpecialFunc 具体特殊操作细节，λ函数传入
      */
     void doCrawler(String type, long sleepTime, CrawlerSpecialFunc crawlerSpecialFunc);
@@ -64,7 +64,7 @@ public interface CrawlerBaseService {
      * 传入一个函数式接口，建议使用λ表达式，会代码简洁很多<br/>
      * 里面已经实现获取链接，删除链接，函数式接口中实现自己的操作。
      * @param type 链接类型
-     * @param sleepTime 每一次爬取之后停止时间，微博这种你要是敢一直不停，就得无休止的改header
+     * @param sleepTime 每一次爬取之后线程休眠时间，大于1500ms的数值写入可以让其停止(sleepTime-1000,sleepTime)的随机时间
      * @param threadCounts 线程数量
      * @param crawlerSpecialFunc 具体特殊操作细节，λ函数传入
      */

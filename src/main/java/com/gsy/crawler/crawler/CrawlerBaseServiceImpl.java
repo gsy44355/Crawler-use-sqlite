@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created By Gsy on 2019/5/18
@@ -87,8 +88,10 @@ public class CrawlerBaseServiceImpl implements CrawlerBaseService {
         while(true){
             TbCrawlerUrl url = null;
             try {
-                if(sleepTime != 0 ){
+                if(sleepTime != 0 && sleepTime < 1500){
                     Thread.sleep(sleepTime);
+                }else if(sleepTime >= 1500){
+                    long newSleepTime = (long) (Math.random() * 1000 +sleepTime-1000);
                 }
                 url = this.getUrl(type);
                 if(url == null){

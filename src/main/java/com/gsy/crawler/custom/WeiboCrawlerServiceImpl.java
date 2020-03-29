@@ -52,7 +52,7 @@ public class WeiboCrawlerServiceImpl implements SpecialCrawlerService {
      * 获取图片源链接，会有两种方式  针对的是https://weibo.cn
      */
     public void getUrl() {
-        crawlerBaseService.doCrawler("1",1000,(tbCrawlerUrl) -> {
+        crawlerBaseService.doCrawler("1",3000,(tbCrawlerUrl) -> {
             String s = tbCrawlerUrl.getUrl();
             String html = WebCrawlerUtil.getWebHtml(s, CreateHeaderMap.getMapByName("crawler/page"),"utf-8");
             Document document = Jsoup.parse(html);
